@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  DeleteDateColumn,
+} from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -16,4 +22,10 @@ export class User {
 
   @Column()
   country: string;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 }

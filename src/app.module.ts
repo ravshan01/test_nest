@@ -1,5 +1,6 @@
 import { Module, NestModule, MiddlewareConsumer, Logger } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoreModule } from './modules/core/core.module';
@@ -9,16 +10,20 @@ import { LoggerMiddleware } from './middlewares/logger.middlewre';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'test_nest',
-      entities: [],
-      autoLoadEntities: true,
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      imports: [CoreModule],
+      useFactory: async (configService: ConfigService): Promise<TypeOrmModuleOptions> => ({
+        type: 'mysql',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USER_NAME'),
+        password: configService.get<string>('DB_USER_PASSWORD'),
+        database: configService.get<string>('DB_NAME'),
+        entities: [],
+        autoLoadEntities: true,
+        synchronize: true,
+      }),
+      inject: [ConfigService],
     }),
     CoreModule,
     UsersModule,

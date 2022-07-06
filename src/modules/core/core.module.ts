@@ -1,5 +1,6 @@
 import { Module, Global } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 
 @Global()
 @Module({
@@ -8,7 +9,8 @@ import { JwtModule } from '@nestjs/jwt';
       secret: 'SECRET_KEY',
       signOptions: { expiresIn: '7d' },
     }),
+    ConfigModule.forRoot({ cache: true }),
   ],
-  exports: [JwtModule],
+  exports: [JwtModule, ConfigModule],
 })
 export class CoreModule {}

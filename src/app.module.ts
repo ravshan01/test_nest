@@ -1,6 +1,6 @@
 import { Module, NestModule, MiddlewareConsumer, Logger } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoreModule } from './modules/core/core.module';
@@ -11,7 +11,7 @@ import { LoggerMiddleware } from './middlewares/logger.middlewre';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      imports: [CoreModule],
+      imports: [ConfigModule],
       useFactory: async (configService: ConfigService): Promise<TypeOrmModuleOptions> => ({
         type: 'mysql',
         host: configService.get<string>('DB_HOST'),

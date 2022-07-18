@@ -8,8 +8,8 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(AuthGuard)
   @Post()
+  @UseGuards(AuthGuard)
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
@@ -24,14 +24,14 @@ export class UsersController {
     return this.usersService.findOne(+id);
   }
 
-  @UseGuards(AuthGuard)
   @Patch(':id')
+  @UseGuards(AuthGuard)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
 
-  @UseGuards(AuthGuard)
   @Delete(':id')
+  @UseGuards(AuthGuard)
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }

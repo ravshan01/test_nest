@@ -1,4 +1,4 @@
-import { Module, NestModule, MiddlewareConsumer, Logger } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, ClassSerializerInterceptor } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
@@ -7,6 +7,7 @@ import { CoreModule } from './modules/core/core.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middlewre';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -30,7 +31,13 @@ import { LoggerMiddleware } from './middlewares/logger.middlewre';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {

@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 import IUser from '../interfaces/IUser';
 
 @Entity('users')
@@ -16,6 +17,7 @@ export class User implements IUser {
   login: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @Column()
@@ -25,8 +27,10 @@ export class User implements IUser {
   country: string;
 
   @CreateDateColumn()
+  @Exclude()
   created_at: Date;
 
   @DeleteDateColumn()
+  @Exclude()
   deleted_at: Date;
 }
